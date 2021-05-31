@@ -8,12 +8,11 @@ import javax.inject.Inject
 import javax.sql.CommonDataSource
 
 class Repository @Inject constructor(private val remoteDataSource: RemoteDataSource) : IRepository{
+
     override suspend fun getUsers(): List<User>? {
         val users = arrayListOf<User>()
-        remoteDataSource.getUsers()?.map{
-            users.add(
-                DataMapper.mapUserResponseToUser(it)
-            )
-        }
+        remoteDataSource.getUsers()
+        return users
     }
+
 }

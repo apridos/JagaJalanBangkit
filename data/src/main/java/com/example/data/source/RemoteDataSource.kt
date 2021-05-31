@@ -4,9 +4,10 @@ import com.example.data.source.network.api.ApiService
 import com.example.data.source.network.response.UsersRemote
 import com.example.data.utils.DataMapper
 import java.lang.Exception
+import javax.inject.Inject
 
 
-class RemoteDataSource(private val apiService: ApiService) {
+class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
 
     suspend fun getUsers(): List<UsersRemote>?{
         return try{
