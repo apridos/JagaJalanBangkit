@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">JagaJalan</string>
+    <string name="riwayat">Riwayat</string>
+    <string name="lapor">Lapor</string>
+    <string name="attachment">Attachment</string>
+    <string name="alamat">Alamat</string>
+    <string name="status">Status</string>
+    <string name="sedang_dikerjakan">Sedang dikerjakan</string>
+    <string name="sudah_diperbaiki">Sudah diperbaiki</string>
+    <string name="btn_back">tombol kembali</string>
+    <string name="cant_open_camera">Tidak dapat membuka kamera</string>
+</resources>
