@@ -14,7 +14,7 @@ object DataMapper {
                     email = this.email,
                     displayName = this.displayName,
                     password = null,
-                    token = this.token,
+                    token = this.token.toString(),
                     refreshToken = this.refreshToken
                     )
         }

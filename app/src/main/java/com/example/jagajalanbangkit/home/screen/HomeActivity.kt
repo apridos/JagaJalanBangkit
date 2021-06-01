@@ -31,7 +31,10 @@ class HomeActivity : AppCompatActivity() {
         MyApplication.appComponent.inject(this)
 
         GlobalScope.async {
+
             val login = userViewModel.login()
+
+
             login?.let {
                 val sharedPref = getPreferences(Context.MODE_PRIVATE)
                 with(sharedPref.edit()) {
@@ -40,28 +43,21 @@ class HomeActivity : AppCompatActivity() {
                     putString(getString(R.string.key_token), it.token)
                     putString(getString(R.string.key_refresh_token), it.refreshToken)
                     apply()
+
                 }
+
+                val laporan = userViewModel.createLaporan("Bearer ${it.token}", Laporan(
+                    alamat = "Parapat",
+                    kondisi_kerusakan = "Parah cok",
+                    deskripsi = "ya gitulah",
+                    foto = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjMwMjUxYWIxYTJmYzFkMzllNDMwMWNhYjc1OTZkNDQ5ZDgwNDI1ZjYiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQXByaWRvIiwicm9sZSI6InVzZXIiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vdGVuc2lsZS1zaGlwLTMxMjQxNSIsImF1ZCI6InRlbnNpbGUtc2hpcC0zMTI0MTUiLCJhdXRoX3RpbWUiOjE2MjI1Mzc1NTQsInVzZXJfaWQiOiJTa0c3dmJUSFAzZWJ3S3hPUm1NMmNoM2NLZmEyIiwic3ViIjoiU2tHN3ZiVEhQM2Vid0t4T1JtTTJjaDNjS2ZhMiIsImlhdCI6MTYyMjUzNzU1NCwiZXhwIjoxNjIyNTQxMTU0LCJlbWFpbCI6ImFwcmlkb0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYXByaWRvQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.LOHk5rZDo4OJMW5EqMYmw1NYw0KpDjyU-Nu1gVeLsTslkCIakK8VcpHFpUoH2OZOK-fvU66sEapZsBOC1T4cW2kolAe61UZ2zyIOxw2ILj7xWmpllDN35SZLAbV6hcxkB9LuS1_gyX0SpsXHDCoyTedbzoqmA4OkC17nbWe0pVmABZInF1_Xz4OiV4GAmfLkszj-a_7-ul5M_mrMJT8Crbu-g1h2Gc-ghgvRFMp3MQ0mkyDyUyqycJ95AdH7DIepWRPBcNc9R2-_NjynmoRWDVyDT6PdHYdazeyc0GHaLI8qlF2bixSaS7353M7vz5aBuWaUlXO_IGQHk0XOXmiZUw",
+                    longitude = 101.4309899,
+                    latitude = 101.4309899
+                ))
+                Log.d("laporan", laporan.toString())
             }
-            val token = getPreferences(Context.MODE_PRIVATE).getString(getString(R.string.key_token), null).toString()
-
-            val users = userViewModel.getUsers(token)
-
-            Log.d("ini", users)
-
-            val laporan = userViewModel.createLaporan(token, Laporan(
-                alamat = "Parapat",
-                kondisi_kerusakan = "Parah cok",
-                deskripsi = "ya gitulah",
-                foto = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjMwMjUxYWIxYTJmYzFkMzllNDMwMWNhYjc1OTZkNDQ5ZDgwNDI1ZjYiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQXByaWRvIiwicm9sZSI6InVzZXIiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vdGVuc2lsZS1zaGlwLTMxMjQxNSIsImF1ZCI6InRlbnNpbGUtc2hpcC0zMTI0MTUiLCJhdXRoX3RpbWUiOjE2MjI1Mzc1NTQsInVzZXJfaWQiOiJTa0c3dmJUSFAzZWJ3S3hPUm1NMmNoM2NLZmEyIiwic3ViIjoiU2tHN3ZiVEhQM2Vid0t4T1JtTTJjaDNjS2ZhMiIsImlhdCI6MTYyMjUzNzU1NCwiZXhwIjoxNjIyNTQxMTU0LCJlbWFpbCI6ImFwcmlkb0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYXByaWRvQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.LOHk5rZDo4OJMW5EqMYmw1NYw0KpDjyU-Nu1gVeLsTslkCIakK8VcpHFpUoH2OZOK-fvU66sEapZsBOC1T4cW2kolAe61UZ2zyIOxw2ILj7xWmpllDN35SZLAbV6hcxkB9LuS1_gyX0SpsXHDCoyTedbzoqmA4OkC17nbWe0pVmABZInF1_Xz4OiV4GAmfLkszj-a_7-ul5M_mrMJT8Crbu-g1h2Gc-ghgvRFMp3MQ0mkyDyUyqycJ95AdH7DIepWRPBcNc9R2-_NjynmoRWDVyDT6PdHYdazeyc0GHaLI8qlF2bixSaS7353M7vz5aBuWaUlXO_IGQHk0XOXmiZUw",
-                longitude = 101.4309899,
-                latitude = 101.4309899
-            ))
-
-            Log.d("laporan", laporan.toString())
 
         }
-
-
 
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
