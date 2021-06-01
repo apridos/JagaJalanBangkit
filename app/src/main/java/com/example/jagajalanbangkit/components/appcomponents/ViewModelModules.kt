@@ -19,6 +19,7 @@ abstract class ViewModelModule {
     @ViewModelKey(UserViewModel::class)
     abstract fun bindHomeViewModel(viewModel: UserViewModel): ViewModel
 
+
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }

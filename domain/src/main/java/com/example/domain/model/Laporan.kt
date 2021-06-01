@@ -5,6 +5,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Laporan(
-    var id_pelapor : String?,
+    var alamat : String,
+    var foto : String,
+    var kondisi_kerusakan : String,
+    var deskripsi : String,
+    var latitude : Double,
+    var longitude : Double
 
 ) : Parcelable

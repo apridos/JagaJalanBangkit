@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.data.source.network.api.ApiService
 import com.example.data.source.network.response.LoginRequest
 import com.example.data.source.network.response.LoginResponse
+import com.example.domain.model.Laporan
 import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Named
@@ -34,6 +35,16 @@ class RemoteDataSource @Inject constructor(
             e.toString()
         }
 
+    }
+
+    suspend fun createLaporan(token : String, laporan: Laporan): Boolean{
+        return try{
+            apiService.createLaporan(token, laporan)
+            true
+        }catch (e : Exception){
+            Log.d("tag", e.toString())
+            false
+        }
     }
 
 }

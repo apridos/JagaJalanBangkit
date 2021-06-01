@@ -3,9 +3,6 @@ package com.example.data.source.network.response
 import com.squareup.moshi.Json
 
 data class LoginResponse (
-    @field:Json(name = "localId")
-    var id : String?,
-
     @field:Json(name = "email")
     var email : String?,
 
