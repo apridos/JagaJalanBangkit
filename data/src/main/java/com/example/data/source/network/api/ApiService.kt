@@ -1,21 +1,16 @@
 package com.example.data.source.network.api
 
-import com.example.data.source.network.response.LaporanRemote
-import com.example.data.source.network.response.UserRemote
+import com.example.data.source.network.response.LoginRequest
+import com.example.data.source.network.response.LoginResponse
 import com.google.gson.internal.LinkedHashTreeMap
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.Response
+import retrofit2.http.*
 
 interface ApiService {
+
+    @POST("./accounts:signInWithPassword")
+    suspend fun login(@Query("key") key : String, @Body loginRequest: LoginRequest) : Response<LoginResponse>
+
     @GET("users")
-    suspend fun getUsers() : LinkedHashTreeMap<String, Any>
-
-    @POST("users")
-    suspend fun registerUser() : UserRemote
-
-    @POST("laporans")
-    suspend fun sendLaporan() : LaporanRemote
-
-
-
+    suspend fun getUsers(@Header("Authorization") token : String) : String
 }

@@ -9,4 +9,11 @@
     <string name="sudah_diperbaiki">Sudah diperbaiki</string>
     <string name="btn_back">tombol kembali</string>
     <string name="cant_open_camera">Tidak dapat membuka kamera</string>
+
+    <string name="key_name">displayName</string>
+    <string name="key_email">email</string>
+    <string name="key_token">token</string>
+    <string name="key_refresh_token">refreshToken</string>
+    <string name="key_user_id">id</string>
+
 </resources>

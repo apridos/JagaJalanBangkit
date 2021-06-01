@@ -8,6 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 
 @Module
 class NetworkModule {
@@ -22,6 +23,7 @@ class NetworkModule {
     }
 
     @Provides
+    @Named("apiService")
     fun provideApiService(client: OkHttpClient): ApiService {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://us-central1-tensile-ship-312415.cloudfunctions.net/api/")
@@ -30,4 +32,16 @@ class NetworkModule {
             .build()
         return retrofit.create(ApiService::class.java)
     }
+
+    @Provides
+    @Named("authService")
+    fun provideAuthService(client: OkHttpClient): ApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://identitytoolkit.googleapis.com/v1/")
+            .addConverterFactory(MoshiConverterFactory.create())//GsonConverterFactory.create())
+            .client(client)
+            .build()
+        return retrofit.create(ApiService::class.java)
+    }
+
 }

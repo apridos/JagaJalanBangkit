@@ -51,11 +51,6 @@ dependencies {
     kapt "androidx.room:room-compiler:2.3.0"
     implementation "androidx.room:room-ktx:2.3.0"
 
-
-    testImplementation 'org.jetbrains.kotlin:kotlin-test'
-    //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.0.0'
-    testImplementation "com.squareup.okhttp3:mockwebserver:4.9.1"
-    implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
-
-
+    // sharedpreferences
+    implementation 'androidx.preference:preference-ktx:1.1.1'
 }

@@ -1,25 +1,39 @@
 package com.example.data.source
 
+import android.util.Log
 import com.example.data.source.network.api.ApiService
-import com.example.data.source.network.response.UsersRemote
-import com.example.data.utils.DataMapper
+import com.example.data.source.network.response.LoginRequest
+import com.example.data.source.network.response.LoginResponse
 import java.lang.Exception
 import javax.inject.Inject
+import javax.inject.Named
 
 
-class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
+class RemoteDataSource @Inject constructor(
+    @Named("apiService")private val apiService: ApiService,
+    @Named("authService")private val authService: ApiService) {
 
-    suspend fun getUsers(): List<UsersRemote>?{
+    suspend fun login( email : String, password : String) : LoginResponse? {
         return try{
-            val usersRemote = arrayListOf<UsersRemote>()
-            val responses = apiService.getUsers()
-            responses.map{
-                DataMapper.mapUsersRemoteToUserRemotes(it)
-            }
+            authService.login("AIzaSyDPrUyahZHrP1p16yY4_vOi19i_P_JLHVs", LoginRequest(
+                email = email,
+                password = password,
 
-            usersRemote
+            )).body()
         }catch (e : Exception){
             null
         }
     }
+
+    suspend fun getUsers(token : String) : String{
+        return try {
+            Log.d("token", token)
+            apiService.getUsers(token)
+        }catch (e : Exception){
+            Log.d("err", e.toString())
+            e.toString()
+        }
+
+    }
+
 }
