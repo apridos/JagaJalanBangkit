@@ -6,6 +6,7 @@ import com.example.data.source.network.response.LoginRequest
 import com.example.data.source.network.response.LoginResponse
 import com.example.domain.model.Laporan
 import java.lang.Exception
+import java.util.function.LongFunction
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -16,10 +17,10 @@ class RemoteDataSource @Inject constructor(
 
     suspend fun login( email : String, password : String) : LoginResponse? {
         return try{
+
             authService.login("AIzaSyDPrUyahZHrP1p16yY4_vOi19i_P_JLHVs", LoginRequest(
                 email = email,
                 password = password,
-
             )).body()
         }catch (e : Exception){
             null
@@ -39,8 +40,12 @@ class RemoteDataSource @Inject constructor(
 
     suspend fun createLaporan(token : String, laporan: Laporan): Boolean{
         return try{
-            apiService.createLaporan(token, laporan)
-            true
+            Log.d("token", token)
+            if(apiService.createLaporan(token, laporan).body()?.idLaporan != null){
+                true
+            }else{
+                false
+            }
         }catch (e : Exception){
             Log.d("tag", e.toString())
             false
@@ -48,3 +53,4 @@ class RemoteDataSource @Inject constructor(
     }
 
 }
+

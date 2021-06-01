@@ -18,4 +18,9 @@ interface ApiService {
 
     @POST("laporans")
     suspend fun createLaporan(@Header("Authorization") token: String, @Body laporan : Laporan) : Response<LaporanResponse>
+
+    @GET("laporans")
+    suspend fun getLaporans() : Response<List<Laporan>>
+
 }
+
