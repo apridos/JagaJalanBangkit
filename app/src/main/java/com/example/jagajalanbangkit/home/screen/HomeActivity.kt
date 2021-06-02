@@ -27,6 +27,12 @@ import com.example.jagajalanbangkit.login.screen.LoginActivity
 import com.example.jagajalanbangkit.riwayat.screen.RiwayatActivity
 import com.example.jagajalanbangkit.viewmodels.UserViewModel
 import com.example.jagajalanbangkit.viewmodels.ViewModelFactory
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import javax.inject.Inject
@@ -34,6 +40,7 @@ import javax.inject.Inject
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
+    private lateinit var googleMap: GoogleMap
 
     @Inject
     lateinit var factory: ViewModelFactory
@@ -77,6 +84,16 @@ class HomeActivity : AppCompatActivity() {
 
         setClickListener()
         setContentView(binding.root)
+
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment
+        mapFragment.getMapAsync(OnMapReadyCallback {
+            googleMap = it
+
+            //add marker
+            val location = LatLng(2.32,99.06)
+            googleMap.addMarker(MarkerOptions().position(location).title("Dummy Marker"))
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location,15f))
+        })
 
         binding.apply {
             btnLapor.setOnClickListener {
