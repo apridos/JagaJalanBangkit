@@ -45,4 +45,15 @@ class NetworkModule {
         return retrofit.create(ApiService::class.java)
     }
 
+    @Provides
+    @Named("reAuthService")
+    fun provideReauthService(client: OkHttpClient): ApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://securetoken.googleapis.com/v1/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        return retrofit.create(ApiService::class.java)
+    }
+
 }

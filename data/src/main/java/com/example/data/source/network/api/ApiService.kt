@@ -1,8 +1,6 @@
 package com.example.data.source.network.api
 
-import com.example.data.source.network.response.LaporanResponse
-import com.example.data.source.network.response.LoginRequest
-import com.example.data.source.network.response.LoginResponse
+import com.example.data.source.network.response.*
 import com.example.domain.model.Laporan
 import com.google.gson.internal.LinkedHashTreeMap
 import retrofit2.Response
@@ -19,8 +17,11 @@ interface ApiService {
     @POST("laporans")
     suspend fun createLaporan(@Header("Authorization") token: String, @Body laporan : Laporan) : Response<LaporanResponse>
 
-    @GET("laporans")
-    suspend fun getLaporans() : Response<List<Laporan>>
+    @POST("token")
+    suspend fun reLogin(refreshToken : String, grant_type : String = "refresh_token") : Response<ReauthResponse>
+
+    @GET("laporan_user")
+    suspend fun getUserLaporans(@Header("Authorization") token : String) : UserLaporanListResponse
 
 }
 

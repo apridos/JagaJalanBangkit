@@ -4,6 +4,10 @@ import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 
 data class LoginResponse (
+
+    @field:SerializedName("localId")
+    var userId : String,
+
     //@field:Json(name = "email")
     @field:SerializedName("email")
     var email : String?,

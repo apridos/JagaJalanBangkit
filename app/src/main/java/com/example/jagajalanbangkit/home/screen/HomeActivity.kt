@@ -1,19 +1,33 @@
 package com.example.jagajalanbangkit.home.screen
 
+import android.Manifest
+import android.app.Application
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.domain.model.Laporan
 import com.example.jagajalanbangkit.MyApplication
 import com.example.jagajalanbangkit.R
 import com.example.jagajalanbangkit.databinding.ActivityHomeBinding
+import com.example.jagajalanbangkit.lapor.screen.LaporActivity
+import com.example.jagajalanbangkit.login.screen.LoginActivity
 import com.example.jagajalanbangkit.viewmodels.UserViewModel
 import com.example.jagajalanbangkit.viewmodels.ViewModelFactory
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity() {
@@ -26,41 +40,79 @@ class HomeActivity : AppCompatActivity() {
     private val userViewModel: UserViewModel by viewModels{
         factory
     }
+    private var locationManager : LocationManager? = null
+
+    private lateinit var sharedPreferences: SharedPreferences
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
         MyApplication.appComponent.inject(this)
 
-        GlobalScope.async {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        binding.progressBar.visibility = View.VISIBLE
 
-            val login = userViewModel.login()
-
-
-            login?.let {
-                val sharedPref = getPreferences(Context.MODE_PRIVATE)
-                with(sharedPref.edit()) {
-                    putString(getString(R.string.key_email), it.email)
-                    putString(getString(R.string.key_name), it.displayName)
-                    putString(getString(R.string.key_token), it.token)
-                    putString(getString(R.string.key_refresh_token), it.refreshToken)
-                    apply()
-
-                }
-
-                val laporan = userViewModel.createLaporan("Bearer ${it.token}", Laporan(
-                    alamat = "Parapat",
-                    kondisi_kerusakan = "Parah cok",
-                    deskripsi = "ya gitulah",
-                    foto = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjMwMjUxYWIxYTJmYzFkMzllNDMwMWNhYjc1OTZkNDQ5ZDgwNDI1ZjYiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQXByaWRvIiwicm9sZSI6InVzZXIiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vdGVuc2lsZS1zaGlwLTMxMjQxNSIsImF1ZCI6InRlbnNpbGUtc2hpcC0zMTI0MTUiLCJhdXRoX3RpbWUiOjE2MjI1Mzc1NTQsInVzZXJfaWQiOiJTa0c3dmJUSFAzZWJ3S3hPUm1NMmNoM2NLZmEyIiwic3ViIjoiU2tHN3ZiVEhQM2Vid0t4T1JtTTJjaDNjS2ZhMiIsImlhdCI6MTYyMjUzNzU1NCwiZXhwIjoxNjIyNTQxMTU0LCJlbWFpbCI6ImFwcmlkb0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYXByaWRvQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.LOHk5rZDo4OJMW5EqMYmw1NYw0KpDjyU-Nu1gVeLsTslkCIakK8VcpHFpUoH2OZOK-fvU66sEapZsBOC1T4cW2kolAe61UZ2zyIOxw2ILj7xWmpllDN35SZLAbV6hcxkB9LuS1_gyX0SpsXHDCoyTedbzoqmA4OkC17nbWe0pVmABZInF1_Xz4OiV4GAmfLkszj-a_7-ul5M_mrMJT8Crbu-g1h2Gc-ghgvRFMp3MQ0mkyDyUyqycJ95AdH7DIepWRPBcNc9R2-_NjynmoRWDVyDT6PdHYdazeyc0GHaLI8qlF2bixSaS7353M7vz5aBuWaUlXO_IGQHk0XOXmiZUw",
-                    longitude = 101.4309899,
-                    latitude = 101.4309899
-                ))
-                Log.d("laporan", laporan.toString())
+        if (ContextCompat.checkSelfPermission(this@HomeActivity, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this@HomeActivity,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(this@HomeActivity,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            } else {
+                ActivityCompat.requestPermissions(this@HomeActivity,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
             }
-
         }
 
-        super.onCreate(savedInstanceState)
-        binding = ActivityHomeBinding.inflate(layoutInflater)
+        Log.d("iniloh", sharedPreferences.getString(getString(R.string.key_token), null).toString())
+
+        if(sharedPreferences.getString(getString(R.string.key_token), null) == null){
+            Log.d("login", "login")
+            startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
+        }
+
+        binding.progressBar.visibility = View.INVISIBLE
+
+        setClickListener()
         setContentView(binding.root)
+    }
+
+    private fun setClickListener(){
+        val token = getPreferences(Context.MODE_PRIVATE).getString(getString(R.string.key_token), "invalid")
+        val refreshToken = getPreferences(Context.MODE_PRIVATE).getString(getString(R.string.key_refresh_token), "invalid")
+        binding.btnLapor.setOnClickListener {
+            try {
+                locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+            } catch(ex: SecurityException) {
+                Log.d("myTag", ex.toString())
+            }
+
+            val intent = Intent(this, LaporActivity::class.java)
+            intent.putExtra("token", token)
+            intent.putExtra("refreshToken", refreshToken)
+            startActivity(intent)
+        }
+    }
+
+    private val locationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            GlobalScope.async {
+                with(sharedPreferences.edit()){
+                    putString(getString(R.string.key_latitude), location.latitude.toString())
+                    putString(getString(R.string.key_longitude), location.longitude.toString())
+                    commit()
+                }
+            }
+        }
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+    }
+
+    private fun checkLocation(){
+        if(!locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(this@HomeActivity, "Nyalakan GPS untuk menggunakan JagaJalan", Toast.LENGTH_SHORT).show()
+        }
     }
 }

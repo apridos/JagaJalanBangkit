@@ -4,7 +4,24 @@ import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 
 data class LaporanResponse (
-    //@field:Json(name ="id")
     @field:SerializedName("id")
-    var idLaporan : String
-    )
+    var idLaporan : String,
+
+    @field:SerializedName("alamat")
+    var alamat : String,
+
+    @field:SerializedName("kondisi_kerusakan")
+    var kondisi_kerusakan : String,
+
+    @field:SerializedName("deskripsi")
+    var deskripsi : String,
+
+    @field:SerializedName("longitude")
+    var longitude : Double,
+
+    @field:SerializedName("latitude")
+    var latitude : Double,
+
+    @field:SerializedName("foto")
+    var foto : String
+)

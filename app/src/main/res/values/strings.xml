@@ -2,6 +2,14 @@
     <string name="app_name">JagaJalan</string>
     <string name="riwayat">Riwayat</string>
     <string name="lapor">Lapor</string>
+    <string name="detail">Detail</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="daftar"><u>daftar</u></string>
+    <string name="masuk"><u>masuk</u></string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="nama">Nama</string>
     <string name="attachment">Attachment</string>
     <string name="alamat">Alamat</string>
     <string name="status">Status</string>
@@ -9,11 +17,17 @@
     <string name="sudah_diperbaiki">Sudah diperbaiki</string>
     <string name="btn_back">tombol kembali</string>
     <string name="cant_open_camera">Tidak dapat membuka kamera</string>
+    <string name="text_daftar">Belum memiliki akun? silahkan </string>
+    <string name="text_masuk">Sudah memiliki akun? silahkan </string>
 
     <string name="key_name">displayName</string>
     <string name="key_email">email</string>
     <string name="key_token">token</string>
     <string name="key_refresh_token">refreshToken</string>
     <string name="key_user_id">id</string>
+    <string name="key_latitude">latitude</string>
+    <string name="key_longitude">longitude</string>
+    <string name="kondisi_kerusakan">Kondisi Kerusakan</string>
+    <string name="deskripsi">Deskripsi</string>
 
 </resources>

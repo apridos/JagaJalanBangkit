@@ -2,6 +2,7 @@ package com.example.jagajalanbangkit.components.appcomponents
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.jagajalanbangkit.viewmodels.LaporanViewModel
 import com.example.jagajalanbangkit.viewmodels.UserViewModel
 import com.example.jagajalanbangkit.viewmodels.ViewModelFactory
 import dagger.Binds
@@ -19,6 +20,10 @@ abstract class ViewModelModule {
     @ViewModelKey(UserViewModel::class)
     abstract fun bindHomeViewModel(viewModel: UserViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(LaporanViewModel::class)
+    abstract fun bindLaporViewModel(viewModel: LaporanViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
