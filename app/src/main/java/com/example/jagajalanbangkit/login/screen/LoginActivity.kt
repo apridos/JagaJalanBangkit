@@ -14,6 +14,7 @@ import androidx.activity.viewModels
 import com.example.domain.model.User
 import com.example.jagajalanbangkit.MyApplication
 import com.example.jagajalanbangkit.R
+import com.example.jagajalanbangkit.daftar.screen.DaftarActivity
 import com.example.jagajalanbangkit.databinding.ActivityLaporBinding
 import com.example.jagajalanbangkit.databinding.ActivityLoginBinding
 import com.example.jagajalanbangkit.home.screen.HomeActivity
@@ -91,7 +92,8 @@ class LoginActivity : AppCompatActivity() {
 
             })
             btnRegister.setOnClickListener{
-                //TODO
+                val intent = Intent(this@LoginActivity, DaftarActivity::class.java)
+                startActivity(intent)
             }
             btnLogin.setOnClickListener {
                 if(etEmail.error != null || etEmail.text.toString().length < 1){

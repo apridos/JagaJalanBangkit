@@ -15,8 +15,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".daftar.screen.DaftarActivity"></activity>
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".riwayat.screen.RiwayatActivity"></activity>
+        <activity android:name=".splashscreen.screen.SplashscreenActivity" />
+        <activity android:name=".daftar.screen.DaftarActivity" />
         <activity android:name=".login.screen.LoginActivity" />
         <activity android:name=".home.screen.HomeActivity">
             <intent-filter>

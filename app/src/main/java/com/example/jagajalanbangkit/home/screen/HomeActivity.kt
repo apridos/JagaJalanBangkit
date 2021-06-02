@@ -24,6 +24,7 @@ import com.example.jagajalanbangkit.R
 import com.example.jagajalanbangkit.databinding.ActivityHomeBinding
 import com.example.jagajalanbangkit.lapor.screen.LaporActivity
 import com.example.jagajalanbangkit.login.screen.LoginActivity
+import com.example.jagajalanbangkit.riwayat.screen.RiwayatActivity
 import com.example.jagajalanbangkit.viewmodels.UserViewModel
 import com.example.jagajalanbangkit.viewmodels.ViewModelFactory
 import kotlinx.coroutines.GlobalScope
@@ -76,6 +77,19 @@ class HomeActivity : AppCompatActivity() {
 
         setClickListener()
         setContentView(binding.root)
+
+        binding.apply {
+            btnLapor.setOnClickListener {
+                val intent = Intent(this@HomeActivity, LaporActivity::class.java)
+                startActivity(intent)
+            }
+
+            btnRiwayat.setOnClickListener {
+                val intent = Intent(this@HomeActivity, RiwayatActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
     }
 
     private fun setClickListener(){
