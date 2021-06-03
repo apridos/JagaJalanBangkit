@@ -18,4 +18,8 @@ interface UseCase {
 
     suspend fun getUserLaporans(token : String) : List<Laporan>?
 
+    suspend fun createUser(user : User) : Int
+
+    suspend fun getAllLaporan() : List<ArrayList<Double>>?
+
 }

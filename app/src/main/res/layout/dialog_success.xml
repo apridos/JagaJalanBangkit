@@ -7,6 +7,7 @@
     android:layout_marginHorizontal="16dp"
     card_view:cardBackgroundColor="@color/primary"
     card_view:cardElevation="4dp"
+    android:id="@+id/dialog_success"
     card_view:cardCornerRadius="8dp"
     card_view:strokeColor="@color/secondary"
     card_view:strokeWidth="1dp">

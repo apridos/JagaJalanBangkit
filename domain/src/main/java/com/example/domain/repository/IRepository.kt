@@ -4,6 +4,7 @@ import com.example.domain.model.Laporan
 import com.example.domain.model.Login
 import com.example.domain.model.Reauth
 import com.example.domain.model.User
+import java.util.concurrent.Flow
 
 interface IRepository {
 
@@ -16,5 +17,9 @@ interface IRepository {
     suspend fun reAuth(refreshToken: String) : Reauth?
 
     suspend fun getUserLaporans(token : String) : List<Laporan>?
+
+    suspend fun createUser(user : User) : Int
+
+    suspend fun getAllLaporan() : List<ArrayList<Double>>?
 
 }

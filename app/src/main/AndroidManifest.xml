@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".riwayat.screen.RiwayatActivity"/>
+        <activity android:name=".RiwayatActivity"></activity>
+        <activity android:name=".riwayat.screen.RiwayatActivity" />
         <activity android:name=".splashscreen.screen.SplashscreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,9 +27,11 @@
         </activity>
         <activity android:name=".daftar.screen.DaftarActivity" />
         <activity android:name=".login.screen.LoginActivity" />
-        <activity android:name=".home.screen.HomeActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".home.screen.HomeActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".lapor.screen.LaporActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDPrUyahZHrP1p16yY4_vOi19i_P_JLHVs" />
