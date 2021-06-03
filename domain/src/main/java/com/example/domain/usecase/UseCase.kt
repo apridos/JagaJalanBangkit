@@ -20,4 +20,6 @@ interface UseCase {
 
     suspend fun createUser(user : User) : Int
 
+    suspend fun getAllLaporan() : List<ArrayList<Double>>?
+
 }

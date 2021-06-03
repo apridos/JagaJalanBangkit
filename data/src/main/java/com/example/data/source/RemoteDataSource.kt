@@ -9,6 +9,10 @@ import com.example.data.utils.DataMapper
 import com.example.domain.model.Laporan
 import com.example.domain.model.User
 import com.google.gson.Gson
+import com.google.gson.JsonObject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flow
 import org.json.JSONObject
 import java.lang.Exception
 import java.util.function.LongFunction
@@ -92,5 +96,18 @@ class RemoteDataSource @Inject constructor(
 
     suspend fun createUser(user : User) : Int{
         return apiService.createUser(user).code()
+    }
+
+    suspend fun getAllLaporan() : List<ArrayList<Double>>?{
+        return try {
+            val listCoordinate = arrayListOf(arrayListOf<Double>())
+            val response = apiService.getAllLaporan()
+            for (item in response.indices){
+                listCoordinate.add(arrayListOf(response[item].get("longitude").toString().toDouble(), response[item].get("latitude").toString().toDouble()))
+            }
+            listCoordinate
+        }catch (e : Exception){
+            null
+        }
     }
 }

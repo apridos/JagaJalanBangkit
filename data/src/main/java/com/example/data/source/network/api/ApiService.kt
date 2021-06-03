@@ -4,8 +4,10 @@ import com.example.data.source.network.response.*
 import com.example.domain.model.Laporan
 import com.example.domain.model.User
 import com.google.gson.internal.LinkedHashTreeMap
+import com.google.gson.internal.LinkedTreeMap
 import retrofit2.Response
 import retrofit2.http.*
+import java.util.*
 
 interface ApiService {
 
@@ -26,6 +28,9 @@ interface ApiService {
 
     @POST("users")
     suspend fun createUser(@Body user : User) : Response<CreteUserResponse>
+
+    @GET("laporans")
+    suspend fun getAllLaporan() : Array<LinkedTreeMap<String, Any>>
 
 }
 

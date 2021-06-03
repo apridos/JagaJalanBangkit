@@ -9,6 +9,7 @@ import com.example.domain.model.Reauth
 import com.example.domain.model.User
 import com.example.domain.repository.IRepository
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -44,6 +45,8 @@ class Repository @Inject constructor(private val remoteDataSource: RemoteDataSou
     override suspend fun createUser(user: User): Int {
         return remoteDataSource.createUser(user)
     }
+
+    override suspend fun getAllLaporan(): List<ArrayList<Double>>? = remoteDataSource.getAllLaporan()
 
 }
 

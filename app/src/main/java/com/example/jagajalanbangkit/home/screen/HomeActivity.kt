@@ -25,6 +25,7 @@ import com.example.jagajalanbangkit.databinding.ActivityHomeBinding
 import com.example.jagajalanbangkit.lapor.screen.LaporActivity
 import com.example.jagajalanbangkit.login.screen.LoginActivity
 import com.example.jagajalanbangkit.riwayat.screen.RiwayatActivity
+import com.example.jagajalanbangkit.viewmodels.LaporanViewModel
 import com.example.jagajalanbangkit.viewmodels.UserViewModel
 import com.example.jagajalanbangkit.viewmodels.ViewModelFactory
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -35,6 +36,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity() {
@@ -45,9 +47,10 @@ class HomeActivity : AppCompatActivity() {
     @Inject
     lateinit var factory: ViewModelFactory
 
-    private val userViewModel: UserViewModel by viewModels{
+    private val laporanViewModel: LaporanViewModel by viewModels{
         factory
     }
+
     private var locationManager : LocationManager? = null
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -57,11 +60,11 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
         MyApplication.appComponent.inject(this)
-
+        getAllLaporan()
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         binding.progressBar.visibility = View.VISIBLE
-
+        checkLocation()
         if (ContextCompat.checkSelfPermission(this@HomeActivity, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this@HomeActivity,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -144,6 +147,12 @@ class HomeActivity : AppCompatActivity() {
     private fun checkLocation(){
         if(!locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             Toast.makeText(this@HomeActivity, "Nyalakan GPS untuk menggunakan JagaJalan", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getAllLaporan(){
+        GlobalScope.launch {
+            val listLaporan = laporanViewModel.getAllLaporan()
         }
     }
 }
