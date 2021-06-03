@@ -88,16 +88,6 @@ class HomeActivity : AppCompatActivity() {
         setClickListener()
         setContentView(binding.root)
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment
-        mapFragment.getMapAsync(OnMapReadyCallback {
-            googleMap = it
-
-            //add marker
-            val location = LatLng(2.32,99.06)
-            googleMap.addMarker(MarkerOptions().position(location).title("Dummy Marker"))
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location,15f))
-        })
-
         binding.apply {
             btnLapor.setOnClickListener {
                 val intent = Intent(this@HomeActivity, LaporActivity::class.java)
@@ -153,6 +143,18 @@ class HomeActivity : AppCompatActivity() {
     private fun getAllLaporan(){
         GlobalScope.launch {
             val listLaporan = laporanViewModel.getAllLaporan()
+
+            val mapFragment = supportFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment
+            mapFragment.getMapAsync(OnMapReadyCallback {
+                googleMap = it
+
+                if (listLaporan != null) {
+                    for (koordinat in listLaporan) {
+                        val location = LatLng(koordinat[1], koordinat[0])
+                        googleMap.addMarker(MarkerOptions().position(location))
+                    }
+                }
+            })
         }
     }
 }
