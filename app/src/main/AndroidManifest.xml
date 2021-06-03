@@ -16,7 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".riwayat.screen.RiwayatActivity"></activity>
+        <activity android:name=".admin.detail.screen.DetailActivity"></activity>
+        <activity android:name=".admin.laporan.screen.LaporanActivity" />
+        <activity android:name=".admin.home.screen.AdminHomeActivity" />
+        <activity android:name=".riwayat.screen.RiwayatActivity" />
         <activity android:name=".riwayat.screen.RiwayatActivity" />
         <activity android:name=".splashscreen.screen.SplashscreenActivity">
             <intent-filter>

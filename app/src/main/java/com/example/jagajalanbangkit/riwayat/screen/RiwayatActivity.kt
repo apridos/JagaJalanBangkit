@@ -58,6 +58,12 @@ class RiwayatActivity : AppCompatActivity() {
             setupList(checkToken())
         }
         setContentView(binding.root)
+
+        binding.apply {
+            btnBack.setOnClickListener {
+                this@RiwayatActivity.finish()
+            }
+        }
     }
 
     private fun checkToken() : String{

@@ -32,6 +32,10 @@
     <string name="key_longitude">longitude</string>
     <string name="deskripsi">Deskripsi</string>
     <string name="kondisi_kerusakan">Kondisi Kerusakan</string>
+    <string name="laporan">Laporan</string>
+    <string name="daftar_laporan">Daftar Laporan</string>
+    <string name="selesai">Selesai</string>
+    <string name="tunda">Tunda</string>
 
 
 </resources>
