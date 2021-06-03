@@ -249,6 +249,7 @@ class LaporActivity : AppCompatActivity() {
             val byteArray = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArray)
             laporan.foto = "data:image/jpeg;base64," + Base64.encodeToString(byteArray.toByteArray(), Base64.DEFAULT)
+            binding.tvAttachment.text = resources.getString(R.string.photo)
         }
     }
 

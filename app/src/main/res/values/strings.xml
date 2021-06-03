@@ -21,6 +21,7 @@
     <string name="text_daftar">Belum memiliki akun? silahkan </string>
     <string name="text_masuk">Sudah memiliki akun? silahkan </string>
     <string name="dialog_berhasil">Laporan berhasil dibuat</string>
+    <string name="photo">photo.jpg</string>
 
     <string name="key_name">displayName</string>
     <string name="key_email">email</string>

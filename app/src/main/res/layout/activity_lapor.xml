@@ -57,8 +57,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    <EditText
-        android:id="@+id/et_attachment"
+    <TextView
+        android:id="@+id/tv_attachment"
         android:fontFamily="@font/gordita_regular"
         android:background="@drawable/custom_edit_text"
         android:layout_width="match_parent"
@@ -67,15 +67,15 @@
         android:layout_marginEnd="16dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:gravity="center_vertical"
         android:maxLines="1"
         android:textColor="@color/black"
         tools:text="@string/attachment"
-        android:inputType="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
-    </EditText>
+    </TextView>
 
     <ImageButton
         android:id="@+id/btn_camera"
@@ -83,9 +83,9 @@
         android:layout_height="50dp"
         android:background="@drawable/custom_camera_button"
         android:src="@drawable/ic_baseline_camera_alt_24"
-        app:layout_constraintBottom_toBottomOf="@+id/et_attachment"
-        app:layout_constraintEnd_toEndOf="@+id/et_attachment"
-        app:layout_constraintTop_toTopOf="@+id/et_attachment" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_attachment"
+        app:layout_constraintEnd_toEndOf="@+id/tv_attachment"
+        app:layout_constraintTop_toTopOf="@+id/tv_attachment" />
 
     <TextView
         android:id="@+id/textView2"
@@ -97,7 +97,7 @@
         android:text="@string/alamat"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_attachment" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_attachment" />
 
     <TextView
         android:id="@+id/textView3"
@@ -109,7 +109,7 @@
         android:text="@string/kondisi_kerusakan"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_attachment" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_attachment" />
 
     <TextView
         android:id="@+id/textView4"
@@ -121,7 +121,7 @@
         android:text="@string/deskripsi"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_attachment" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_attachment" />
 
     <EditText
         android:id="@+id/et_alamat"
