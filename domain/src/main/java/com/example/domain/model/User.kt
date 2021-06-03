@@ -10,4 +10,8 @@ data class User(
 
     var password : String,
 
+    var displayName : String? = null,
+
+    var role : String? = null
+
 ) : Parcelable

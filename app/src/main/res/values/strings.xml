@@ -29,7 +29,8 @@
     <string name="key_user_id">id</string>
     <string name="key_latitude">latitude</string>
     <string name="key_longitude">longitude</string>
-    <string name="kondisi_kerusakan">Kondisi Kerusakan</string>
     <string name="deskripsi">Deskripsi</string>
+    <string name="kondisi_kerusakan">Kondisi Kerusakan</string>
+
 
 </resources>

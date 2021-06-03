@@ -20,6 +20,7 @@ import com.example.jagajalanbangkit.databinding.ActivityLoginBinding
 import com.example.jagajalanbangkit.home.screen.HomeActivity
 import com.example.jagajalanbangkit.viewmodels.UserViewModel
 import com.example.jagajalanbangkit.viewmodels.ViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -69,7 +70,6 @@ class LoginActivity : AppCompatActivity() {
                 }
 
             })
-
             etPassword.addTextChangedListener(object : TextWatcher{
                 override fun beforeTextChanged(
                     s: CharSequence?,
@@ -92,11 +92,10 @@ class LoginActivity : AppCompatActivity() {
 
             })
             btnRegister.setOnClickListener{
-                val intent = Intent(this@LoginActivity, DaftarActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this@LoginActivity, DaftarActivity::class.java))
             }
             btnLogin.setOnClickListener {
-                if(etEmail.error != null || etEmail.text.toString().length < 1){
+                if(etEmail.error != null || etEmail.text.toString().isEmpty()){
                     Toast.makeText(this@LoginActivity, "Periksa email", Toast.LENGTH_SHORT).show()
                 }else if(etPassword.text.toString().length < 8){
                     Toast.makeText(this@LoginActivity, "Lengkapi password", Toast.LENGTH_SHORT).show()
@@ -122,18 +121,19 @@ class LoginActivity : AppCompatActivity() {
                                         HomeActivity::class.java
                                     )
                                 )
+                                finish()
                             }
 
 
                         }else{
-                            runOnUiThread{ Runnable {
-                                Toast.makeText(this@LoginActivity, "Email atau password salah", Toast.LENGTH_SHORT).show()
-                            }}
-                            binding.progressBar.visibility = View.INVISIBLE
-                            btnLogin.isEnabled = true
-                            btnLogin.isClickable = true
+                            runOnUiThread(Runnable {
+                                toastGagal()
+                            })
                         }
                     }
+                    progressBar.visibility = View.INVISIBLE
+                    btnLogin.isEnabled = true
+                    btnLogin.isClickable = true
                 }
             }
         }
@@ -146,5 +146,10 @@ class LoginActivity : AppCompatActivity() {
         return (!email.isEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
     }
 
-
+    private fun toastGagal(){
+        Toast.makeText(this@LoginActivity, "Username atau password salah", Toast.LENGTH_SHORT).show()
+        binding.progressBar.visibility = View.INVISIBLE
+        binding.btnLogin.isClickable = true
+        binding.btnLogin.isEnabled = true
+    }
 }

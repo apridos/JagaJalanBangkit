@@ -194,7 +194,7 @@ class LaporActivity : AppCompatActivity() {
                 runOnUiThread(Runnable {
                     toastGagal()
                 })
-                userViewModel.reAuth(refreshToken!!)
+                userViewModel.reAuth(refreshToken)
             }else{
                 runOnUiThread(Runnable {
                     toastBerhasil()
@@ -202,18 +202,22 @@ class LaporActivity : AppCompatActivity() {
                 delay(2000)
                 startActivity(Intent(this@LaporActivity, HomeActivity::class.java))
             }
-            binding.progressBar.visibility = View.INVISIBLE
-            binding.btnLapor.isClickable = true
-            binding.btnLapor.isEnabled = true
+
         }
     }
 
     private fun toastGagal(){
         Toast.makeText(this@LaporActivity, "Gagal membuat laporan", Toast.LENGTH_SHORT).show()
+        binding.progressBar.visibility = View.INVISIBLE
+        binding.btnLapor.isClickable = true
+        binding.btnLapor.isEnabled = true
     }
 
     private fun toastBerhasil(){
         Toast.makeText(this@LaporActivity, "Laporan berhasil dibuat", Toast.LENGTH_SHORT).show()
+        binding.progressBar.visibility = View.INVISIBLE
+        binding.btnLapor.isClickable = true
+        binding.btnLapor.isEnabled = true
     }
 
     private fun openCamera() {

@@ -41,5 +41,9 @@ class Repository @Inject constructor(private val remoteDataSource: RemoteDataSou
         }
     }
 
+    override suspend fun createUser(user: User): Int {
+        return remoteDataSource.createUser(user)
+    }
+
 }
 

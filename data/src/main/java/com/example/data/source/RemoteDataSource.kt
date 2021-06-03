@@ -7,6 +7,7 @@ import com.example.data.source.network.response.LoginResponse
 import com.example.data.source.network.response.ReauthResponse
 import com.example.data.utils.DataMapper
 import com.example.domain.model.Laporan
+import com.example.domain.model.User
 import com.google.gson.Gson
 import org.json.JSONObject
 import java.lang.Exception
@@ -89,4 +90,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
+    suspend fun createUser(user : User) : Int{
+        return apiService.createUser(user).code()
+    }
 }

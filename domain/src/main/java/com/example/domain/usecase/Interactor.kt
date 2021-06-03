@@ -19,4 +19,6 @@ class Interactor @Inject constructor(val repository : IRepository) : UseCase{
     override suspend fun reAuth(refreshToken: String) : Reauth? = repository.reAuth(refreshToken)
 
     override suspend fun getUserLaporans(token : String) : List<Laporan>? = repository.getUserLaporans(token)
+
+    override suspend fun createUser(user: User) : Int = repository.createUser(user)
 }

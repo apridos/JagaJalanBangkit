@@ -17,4 +17,6 @@ interface IRepository {
 
     suspend fun getUserLaporans(token : String) : List<Laporan>?
 
+    suspend fun createUser(user : User) : Int
+
 }
