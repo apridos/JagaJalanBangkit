@@ -41,10 +41,13 @@ class LaporanAdapter() : RecyclerView.Adapter<LaporanAdapter.ListViewHolder>() {
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val laporan = listLaporan[position]
-
+        holder.binding.tvAlamat.text = laporan.alamat
+        holder.binding.tvStatus.text = laporan.kondisi_kerusakan
+        Log.d("laporan", laporan.foto.toString())
         Glide.with(holder.itemView.context)
             .load(laporan.foto)
-            .timeout(10000)
+            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+            .timeout(50000)
             .listener(object : RequestListener<Drawable>{
                 override fun onResourceReady(
                     resource: Drawable?,

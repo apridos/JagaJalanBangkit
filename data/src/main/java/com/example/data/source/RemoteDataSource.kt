@@ -68,7 +68,7 @@ class RemoteDataSource @Inject constructor(
     suspend fun getUserLaporans(token : String): List<Laporan>?{
         return try {
             var listLaporan = arrayListOf<Laporan>()
-            apiService.getUserLaporans("Bearer " + token).laporanList.map {
+            apiService.getUserLaporans(token).laporanList.map {
                 var jsonObject = JSONObject(Gson().toJson(it, Map::class.java))
                 var keys = jsonObject.keys()
                 var laporan = Laporan()
@@ -82,11 +82,11 @@ class RemoteDataSource @Inject constructor(
                         "latitude" -> laporan.latitude = jsonObject.getDouble(key)
                         "longitude" -> laporan.longitude = jsonObject.getDouble(key)
                         "id" -> laporan.idLaporan = jsonObject.getString(key)
+                        "foto" -> laporan.foto = jsonObject.getString(key)
                     }
                 }
                 listLaporan.add(laporan)
             }
-            Log.d("listlap", listLaporan.toString())
             listLaporan
         }catch (e : Exception){
             Log.d("exception", e.toString())

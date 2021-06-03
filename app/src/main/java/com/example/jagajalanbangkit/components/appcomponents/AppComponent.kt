@@ -1,6 +1,6 @@
 package com.example.jagajalanbangkit.components.appcomponents
 
-import com.example.jagajalanbangkit.RiwayatActivity
+import com.example.jagajalanbangkit.riwayat.screen.RiwayatActivity
 import com.example.jagajalanbangkit.components.appcomponents.scopes.AppScope
 import com.example.jagajalanbangkit.components.corecomponents.CoreComponent
 import com.example.jagajalanbangkit.daftar.screen.DaftarActivity

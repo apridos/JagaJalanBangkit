@@ -1,7 +1,6 @@
 package com.example.jagajalanbangkit.home.screen
 
 import android.Manifest
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -18,7 +17,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.domain.model.Laporan
 import com.example.jagajalanbangkit.MyApplication
 import com.example.jagajalanbangkit.R
 import com.example.jagajalanbangkit.databinding.ActivityHomeBinding
@@ -26,7 +24,6 @@ import com.example.jagajalanbangkit.lapor.screen.LaporActivity
 import com.example.jagajalanbangkit.login.screen.LoginActivity
 import com.example.jagajalanbangkit.riwayat.screen.RiwayatActivity
 import com.example.jagajalanbangkit.viewmodels.LaporanViewModel
-import com.example.jagajalanbangkit.viewmodels.UserViewModel
 import com.example.jagajalanbangkit.viewmodels.ViewModelFactory
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -34,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -55,12 +53,17 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
 
+    private var listLaporan : List<ArrayList<Double>>? = null
+
+    private lateinit var mapFragment : SupportMapFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
         MyApplication.appComponent.inject(this)
-        getAllLaporan()
+        GlobalScope.launch(Dispatchers.Main) {
+            getAllLaporan()
+        }
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         binding.progressBar.visibility = View.VISIBLE
@@ -140,21 +143,24 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun getAllLaporan(){
-        GlobalScope.launch {
-            val listLaporan = laporanViewModel.getAllLaporan()
+    private suspend fun getAllLaporan(){
+        val wait = GlobalScope.async {
+            listLaporan = laporanViewModel.getAllLaporan()
 
-            val mapFragment = supportFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment
-            mapFragment.getMapAsync(OnMapReadyCallback {
-                googleMap = it
-
-                if (listLaporan != null) {
-                    for (koordinat in listLaporan) {
-                        val location = LatLng(koordinat[1], koordinat[0])
-                        googleMap.addMarker(MarkerOptions().position(location))
+            mapFragment = supportFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment
+            listLaporan
+        }
+        println(wait.await())
+        mapFragment.getMapAsync(OnMapReadyCallback {
+            if (listLaporan != null) {
+                for (koordinat in listLaporan!!) {
+                    if(koordinat.size > 1){
+                    val location = LatLng(koordinat[1], koordinat[0])
+                    Log.d("loc", location.toString())
+                    it.addMarker(MarkerOptions().position(location))
                     }
                 }
-            })
-        }
+            }
+        })
     }
 }

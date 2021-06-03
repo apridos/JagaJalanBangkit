@@ -12,7 +12,7 @@
     <string name="nama">Nama</string>
     <string name="attachment">Attachment</string>
     <string name="alamat">Alamat</string>
-    <string name="status">Status</string>
+    <string name="status">Keterangan</string>
     <string name="sedang_dikerjakan">Sedang dikerjakan</string>
     <string name="sudah_diperbaiki">Sudah diperbaiki</string>
     <string name="btn_back">tombol kembali</string>
