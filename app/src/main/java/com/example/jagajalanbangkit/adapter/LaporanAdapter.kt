@@ -13,6 +13,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.example.domain.model.Laporan
 import com.example.jagajalanbangkit.databinding.RiwayatItemListBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 
 class LaporanAdapter() : RecyclerView.Adapter<LaporanAdapter.ListViewHolder>() {
@@ -24,7 +28,6 @@ class LaporanAdapter() : RecyclerView.Adapter<LaporanAdapter.ListViewHolder>() {
         fun onItemClicked(laporan: Laporan)
     }
     private val listLaporan = ArrayList<Laporan>()
-
 
     fun setData(list : List<Laporan>){
         listLaporan.clear()
@@ -41,36 +44,36 @@ class LaporanAdapter() : RecyclerView.Adapter<LaporanAdapter.ListViewHolder>() {
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val laporan = listLaporan[position]
+        holder.binding.tvStatus.text = laporan.status
         holder.binding.tvAlamat.text = laporan.alamat
-        holder.binding.tvStatus.text = laporan.kondisi_kerusakan
-        Log.d("laporan", laporan.foto.toString())
-        Glide.with(holder.itemView.context)
-            .load(laporan.foto)
-            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-            .timeout(50000)
-            .listener(object : RequestListener<Drawable>{
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    holder.binding.ivFotoJalan.setBackgroundColor(0XFEFEFEF)
-                    return false
-                }
+        holder.binding.tvKeterangan.text = laporan.kondisi_kerusakan
+            Glide.with(holder.itemView.context)
+                .load(laporan.foto)
+                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .timeout(50000)
+                .listener(object : RequestListener<Drawable>{
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        holder.binding.ivFotoJalan.setBackgroundColor(0XFEFEFEF)
+                        return false
+                    }
 
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    Log.d("GAGAL MEMUAT GAMBAR", e.toString())
-                    return false
-                }
-            })
-            .into(holder.binding.ivFotoJalan)
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return false
+                    }
+                })
+                .into(holder.binding.ivFotoJalan)
+
 
         holder.itemView.setOnClickListener{
             onItemClickCallback.onItemClicked(laporan)

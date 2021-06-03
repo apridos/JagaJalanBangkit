@@ -73,14 +73,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:ellipsize="end"
         android:gravity="start"
         android:maxLines="3"
-        android:ellipsize="end"
-        tools:text="@string/alamat"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/textView5" />
+        app:layout_constraintTop_toTopOf="@+id/textView5"
+        tools:maxLines="6"
+        tools:text="@string/alamat" />
 
     <TextView
         android:id="@+id/textView6"
@@ -88,14 +89,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="96dp"
         android:text="@string/status"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/iv_photo"
         app:layout_constraintTop_toBottomOf="@+id/tv_alamat" />
 
     <TextView
-        android:id="@+id/tv_status"
+        android:id="@+id/tv_keterangan"
         style="@style/TextContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -107,6 +108,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/textView6"
+        tools:maxLines="6"
         tools:text="@string/status" />
 
     <TextView

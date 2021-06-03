@@ -32,5 +32,11 @@ interface ApiService {
     @GET("laporans")
     suspend fun getAllLaporan() : Array<LinkedTreeMap<String, Any>>
 
+    @GET("laporans")
+    suspend fun getAllLaporanList() : Array<LinkedTreeMap<String, Any>>
+
+    @PATCH("laporan/{laporan_id}")
+    suspend fun modifyLaporanStatus(@Path("laporan_id") laporan_id : String, status : String) : Response<Any>
+
 }
 

@@ -11,9 +11,11 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import com.auth0.android.jwt.JWT
 import com.example.domain.model.User
 import com.example.jagajalanbangkit.MyApplication
 import com.example.jagajalanbangkit.R
+import com.example.jagajalanbangkit.admin.home.screen.AdminHomeActivity
 import com.example.jagajalanbangkit.daftar.screen.DaftarActivity
 import com.example.jagajalanbangkit.databinding.ActivityLaporBinding
 import com.example.jagajalanbangkit.databinding.ActivityLoginBinding
@@ -105,7 +107,7 @@ class LoginActivity : AppCompatActivity() {
                     btnLogin.isClickable = false
                     GlobalScope.launch {
                         val result = userViewModel.login(User(binding.etEmail.text.toString(), binding.etPassword.text.toString()))
-
+                        var role : String? = null
                         if ( result != null){
                             with(sharedPreferences.edit()) {
                                 putString(getString(R.string.key_email), result.email)
@@ -115,12 +117,24 @@ class LoginActivity : AppCompatActivity() {
                                 putString(getString(R.string.key_user_id), result.userId)
                                 commit()
                                 binding.progressBar.visibility = View.INVISIBLE
-                                startActivity(
-                                    Intent(
-                                        this@LoginActivity,
-                                        HomeActivity::class.java
+                                role = JWT(result.token!!.replace("Bearer ", "")).getClaim("role").asString()
+                                if(role.toString() == "user"){
+                                    Log.d("masuk", "home")
+                                    startActivity(
+                                        Intent(
+                                            this@LoginActivity,
+                                            HomeActivity::class.java
+                                        )
                                     )
-                                )
+                                }else{
+                                    startActivity(
+                                        Intent(
+                                            this@LoginActivity,
+                                            AdminHomeActivity::class.java
+                                        )
+                                    )
+                                }
+
                                 finish()
                             }
 

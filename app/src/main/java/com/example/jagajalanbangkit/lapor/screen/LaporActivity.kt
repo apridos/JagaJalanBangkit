@@ -188,7 +188,6 @@ class LaporActivity : AppCompatActivity() {
         laporan.deskripsi = binding.etDeskripsi.text.toString()
         laporan.kondisi_kerusakan = binding.etKondisiKerusakan.text.toString()
         GlobalScope.launch {
-            Log.d("initoken", token!!.toString())
             val createLaporanResult = laporViewModel.createLaporan(token.toString(), laporan)
             if(createLaporanResult != 201){
                 runOnUiThread(Runnable {

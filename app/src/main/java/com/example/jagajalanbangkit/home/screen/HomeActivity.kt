@@ -17,8 +17,10 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.auth0.android.jwt.JWT
 import com.example.jagajalanbangkit.MyApplication
 import com.example.jagajalanbangkit.R
+import com.example.jagajalanbangkit.admin.home.screen.AdminHomeActivity
 import com.example.jagajalanbangkit.databinding.ActivityHomeBinding
 import com.example.jagajalanbangkit.lapor.screen.LaporActivity
 import com.example.jagajalanbangkit.login.screen.LoginActivity
@@ -57,6 +59,8 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var mapFragment : SupportMapFragment
 
+    private var role : String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
@@ -79,11 +83,15 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        Log.d("iniloh", sharedPreferences.getString(getString(R.string.key_token), null).toString())
 
         if(sharedPreferences.getString(getString(R.string.key_token), null) == null){
-            Log.d("login", "login")
             startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
+        }else{
+            val token = sharedPreferences.getString(getString(R.string.key_token), null)!!.replace("Bearer ", "")
+            role = JWT(token).getClaim("role").asString()
+            if(role.toString() != "user"){
+                startActivity(Intent(this@HomeActivity, AdminHomeActivity::class.java))
+            }
         }
 
         binding.progressBar.visibility = View.INVISIBLE
@@ -112,7 +120,6 @@ class HomeActivity : AppCompatActivity() {
             try {
                 locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
             } catch(ex: SecurityException) {
-                Log.d("myTag", ex.toString())
             }
 
             val intent = Intent(this, LaporActivity::class.java)
@@ -156,7 +163,6 @@ class HomeActivity : AppCompatActivity() {
                 for (koordinat in listLaporan!!) {
                     if(koordinat.size > 1){
                     val location = LatLng(koordinat[1], koordinat[0])
-                    Log.d("loc", location.toString())
                     it.addMarker(MarkerOptions().position(location))
                     }
                 }
