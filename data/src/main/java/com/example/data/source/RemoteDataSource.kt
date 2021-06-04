@@ -60,7 +60,7 @@ class RemoteDataSource @Inject constructor(
     suspend fun getUserLaporans(token : String): List<Laporan>?{
         return try {
             val listLaporan = arrayListOf<Laporan>()
-            apiService.getUserLaporans(token).laporanList.map {
+            apiService.getUserLaporans(token).body()?.laporanList?.map {
                 val jsonObject = JSONObject(Gson().toJson(it, Map::class.java))
                 val keys = jsonObject.keys()
                 val laporan = Laporan()
@@ -148,5 +148,14 @@ class RemoteDataSource @Inject constructor(
             400
         }
     }
+
+    suspend fun testToken(token: String) : Int{
+        return try {
+            apiService.getUserLaporans(token).code()
+        }catch (e : Exception){
+            403
+        }
+    }
+
 
 }

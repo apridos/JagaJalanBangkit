@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -20,9 +21,7 @@ import com.example.jagajalanbangkit.databinding.ActivityDetailBinding
 import com.example.jagajalanbangkit.viewmodels.LaporanViewModel
 import com.example.jagajalanbangkit.viewmodels.UserViewModel
 import com.example.jagajalanbangkit.viewmodels.ViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class DetailActivity : AppCompatActivity() {
@@ -48,48 +47,47 @@ class DetailActivity : AppCompatActivity() {
             btnBack.setOnClickListener {
                 this@DetailActivity.finish()
             }
+
             btnPending.setOnClickListener {
-                GlobalScope.async(Dispatchers.Main) {
-                    val pending = GlobalScope.async {
-                        laporanViewModel.modifyLaporanStatus(laporan.idLaporan!!, "PENDING")
-                    }
-                    val code = pending.await()
-                    if(code != 201){
-                        Toast.makeText(
-                            this@DetailActivity,
-                            "Perbaikan ini ditunda",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }else{
-                        Toast.makeText(
-                            this@DetailActivity,
-                            "Permintaan gagal",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
+                Toast.makeText(this@DetailActivity, "Perbaikan ditunda", Toast.LENGTH_SHORT).show()
+                pendingLaporan()
             }
             btnLapor.setOnClickListener {
-                GlobalScope.async(Dispatchers.Main) {
-                    val done = GlobalScope.async {
-                        laporanViewModel.modifyLaporanStatus(laporan.idLaporan!!, "DONE")
-                    }
-                    val code = done.await()
-                    if(code != 201){
-                        Toast.makeText(
-                            this@DetailActivity,
-                            "Kerusakan sudah diperbaiki",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }else{
-                        Toast.makeText(
-                            this@DetailActivity,
-                            "Permintaan gagal",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                Toast.makeText(this@DetailActivity, "Kerusakan sudah diperbaiaki", Toast.LENGTH_SHORT).show()
 
+                acceptLaporan()
+            }
                 }
+            }
+
+    private fun acceptLaporan(){
+        Log.d("called", "called")
+        val code = lifecycleScope.async(Dispatchers.Default) {
+            launch{
+                laporanViewModel.modifyLaporanStatus(laporan.idLaporan!!, "DONE")
+            }
+        }
+
+        lifecycleScope.async {
+            code.await()
+            Log.d("code", code.toString())
+
+        }
+
+    }
+
+    private fun pendingLaporan(){
+        runBlocking {
+            Log.d("called", "called")
+            val code = lifecycleScope.async(Dispatchers.Default) {
+                launch{
+                    laporanViewModel.modifyLaporanStatus(laporan.idLaporan!!, "PENDING")
+                }
+            }
+
+            lifecycleScope.async {
+                code.await()
+                Log.d("code", code.toString())
             }
         }
     }
@@ -104,7 +102,7 @@ class DetailActivity : AppCompatActivity() {
         binding.tvKeterangan.text = laporan.kondisi_kerusakan
             Glide.with(this@DetailActivity)
                 .load(laporan.foto)
-                .apply(RequestOptions().override(60, 30))
+                //.apply(RequestOptions().override(60, 30))
                 .timeout(5000)
                 .listener(object : RequestListener<Drawable> {
                     override fun onResourceReady(

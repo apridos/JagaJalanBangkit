@@ -25,4 +25,6 @@ interface IRepository {
     suspend fun getAllLaporanList() : List<Laporan>?
 
     suspend fun modifyLaporanStatus(laporan_id : String, status : String) : Int
+
+    suspend fun testToken(token: String) : Int
 }

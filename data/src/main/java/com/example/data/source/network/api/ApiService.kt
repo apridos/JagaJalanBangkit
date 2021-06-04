@@ -24,7 +24,7 @@ interface ApiService {
     suspend fun reLogin(refreshToken : String, grant_type : String = "refresh_token") : Response<ReauthResponse>
 
     @GET("laporan_user")
-    suspend fun getUserLaporans(@Header("Authorization") token : String) : UserLaporanListResponse
+    suspend fun getUserLaporans(@Header("Authorization") token : String) : Response<UserLaporanListResponse>
 
     @POST("users")
     suspend fun createUser(@Body user : User) : Response<CreteUserResponse>

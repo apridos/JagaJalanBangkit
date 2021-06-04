@@ -49,5 +49,6 @@ class Repository @Inject constructor(private val remoteDataSource: RemoteDataSou
 
     override suspend fun modifyLaporanStatus(laporan_id: String, status: String): Int = remoteDataSource.modifyLaporanStatus(laporan_id, status)
 
+    override suspend fun testToken(token: String) : Int = remoteDataSource.testToken(token)
 }
 

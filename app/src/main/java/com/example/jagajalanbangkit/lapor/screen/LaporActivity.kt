@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.location.Location
 import android.location.LocationListener
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,6 +24,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.example.domain.model.Laporan
 import com.example.jagajalanbangkit.MyApplication
 import com.example.jagajalanbangkit.R
@@ -36,6 +38,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 
@@ -65,15 +68,37 @@ class LaporActivity : AppCompatActivity() {
     private var latitude : Double = 0.0
     private var longitude : Double = 0.0
     private lateinit var sharedPreferences: SharedPreferences
+    private var locationManager : LocationManager? = null
+
+    private fun checkLocation(){
+        if(!locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(this@LaporActivity, "Nyalakan GPS untuk menggunakan JagaJalan", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
 
+
+        try{
+            Log.d("enabled :", locationManager?.isProviderEnabled("gps").toString())
+        }catch (e : Exception){
+            Log.d("nihil", "nihil")
+        }
         token = sharedPreferences.getString(getString(R.string.key_token), "null")!!
         refreshToken = sharedPreferences.getString(getString(R.string.key_refresh_token), "null")!!
         latitude = sharedPreferences.getString(getString(R.string.key_latitude), "0.0")!!.toDouble()
-        latitude = sharedPreferences.getString(getString(R.string.key_latitude), "0.0")!!.toDouble()
+        longitude = sharedPreferences.getString(getString(R.string.key_longitude), "0.0")!!.toDouble()
+
+        Toast.makeText(this, "$latitude,$longitude", Toast.LENGTH_SHORT).show()
+        if(latitude == 0.0 || longitude == 0.0){
+            Toast.makeText(this, "Tidak dapat menemukan lokasi", Toast.LENGTH_SHORT).show()
+        }
         binding = ActivityLaporBinding.inflate(layoutInflater)
 
         binding.progressBar.visibility = View.INVISIBLE
@@ -255,21 +280,4 @@ class LaporActivity : AppCompatActivity() {
             binding.tvAttachment.text = resources.getString(R.string.photo)
         }
     }
-
-
-    private val locationListener: LocationListener = object : LocationListener {
-        override fun onLocationChanged(location: Location) {
-            val sharedPref = getPreferences(Context.MODE_PRIVATE)
-            GlobalScope.async {
-                latitude = location.latitude
-                longitude = location.longitude
-            }
-        }
-        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-        override fun onProviderEnabled(provider: String) {}
-        override fun onProviderDisabled(provider: String) {}
-    }
-
-
-
 }

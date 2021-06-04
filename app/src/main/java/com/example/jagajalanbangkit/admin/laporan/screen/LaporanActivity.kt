@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -16,6 +17,7 @@ import com.example.jagajalanbangkit.R
 import com.example.jagajalanbangkit.adapter.LaporanAdapter
 import com.example.jagajalanbangkit.admin.detail.screen.DetailActivity
 import com.example.jagajalanbangkit.databinding.ActivityLaporanBinding
+import com.example.jagajalanbangkit.home.screen.HomeActivity
 import com.example.jagajalanbangkit.login.screen.LoginActivity
 import com.example.jagajalanbangkit.viewmodels.LaporanViewModel
 import com.example.jagajalanbangkit.viewmodels.ViewModelFactory
