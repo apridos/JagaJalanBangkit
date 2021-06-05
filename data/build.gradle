@@ -44,13 +44,11 @@ android {
 
 dependencies {
     implementation project(":domain")
-
     // room
     implementation "androidx.room:room-runtime:2.3.0"
     testImplementation 'org.junit.jupiter:junit-jupiter'
     kapt "androidx.room:room-compiler:2.3.0"
     implementation "androidx.room:room-ktx:2.3.0"
-
     // sharedpreferences
     implementation 'androidx.preference:preference-ktx:1.1.1'
 }

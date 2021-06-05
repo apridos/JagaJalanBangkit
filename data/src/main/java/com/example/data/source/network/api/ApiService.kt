@@ -24,13 +24,19 @@ interface ApiService {
     suspend fun reLogin(refreshToken : String, grant_type : String = "refresh_token") : Response<ReauthResponse>
 
     @GET("laporan_user")
-    suspend fun getUserLaporans(@Header("Authorization") token : String) : UserLaporanListResponse
+    suspend fun getUserLaporans(@Header("Authorization") token : String) : Response<UserLaporanListResponse>
 
     @POST("users")
     suspend fun createUser(@Body user : User) : Response<CreteUserResponse>
 
     @GET("laporans")
     suspend fun getAllLaporan() : Array<LinkedTreeMap<String, Any>>
+
+    @GET("laporans")
+    suspend fun getAllLaporanList() : Array<LinkedTreeMap<String, Any>>
+
+    @PATCH("laporan/{laporan_id}")
+    suspend fun modifyLaporanStatus(@Path("laporan_id") laporan_id : String, status : String) : Response<Any>
 
 }
 

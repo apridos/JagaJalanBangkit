@@ -5,17 +5,11 @@ import com.example.data.source.network.api.ApiService
 import com.example.data.source.network.response.LoginRequest
 import com.example.data.source.network.response.LoginResponse
 import com.example.data.source.network.response.ReauthResponse
-import com.example.data.utils.DataMapper
 import com.example.domain.model.Laporan
 import com.example.domain.model.User
 import com.google.gson.Gson
-import com.google.gson.JsonObject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.flow
 import org.json.JSONObject
 import java.lang.Exception
-import java.util.function.LongFunction
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -38,10 +32,8 @@ class RemoteDataSource @Inject constructor(
 
     suspend fun getUsers(token : String) : String{
         return try {
-            Log.d("token", token)
             apiService.getUsers(token)
         }catch (e : Exception){
-            Log.d("err", e.toString())
             e.toString()
         }
 
@@ -67,11 +59,11 @@ class RemoteDataSource @Inject constructor(
 
     suspend fun getUserLaporans(token : String): List<Laporan>?{
         return try {
-            var listLaporan = arrayListOf<Laporan>()
-            apiService.getUserLaporans(token).laporanList.map {
-                var jsonObject = JSONObject(Gson().toJson(it, Map::class.java))
-                var keys = jsonObject.keys()
-                var laporan = Laporan()
+            val listLaporan = arrayListOf<Laporan>()
+            apiService.getUserLaporans(token).body()?.laporanList?.map {
+                val jsonObject = JSONObject(Gson().toJson(it, Map::class.java))
+                val keys = jsonObject.keys()
+                val laporan = Laporan()
                 while(keys.hasNext()){
                     val key = keys.next()
                     when(key){
@@ -82,8 +74,10 @@ class RemoteDataSource @Inject constructor(
                         "latitude" -> laporan.latitude = jsonObject.getDouble(key)
                         "longitude" -> laporan.longitude = jsonObject.getDouble(key)
                         "id" -> laporan.idLaporan = jsonObject.getString(key)
-                        "foto" -> laporan.foto = jsonObject.getString(key)
+                        "predicted_foto" -> laporan.foto = jsonObject.getString(key)
+                        "status" -> laporan.status = jsonObject.getString(key)
                     }
+
                 }
                 listLaporan.add(laporan)
             }
@@ -110,4 +104,58 @@ class RemoteDataSource @Inject constructor(
             null
         }
     }
+
+    suspend fun getAllLaporanList() : List<Laporan>? {
+        return try {
+            val listLaporan = arrayListOf<Laporan>()
+            apiService.getAllLaporanList().map {
+                val jsonObject = JSONObject(Gson().toJson(it, Map::class.java))
+                val keys = jsonObject.keys()
+                val laporan = Laporan()
+                while(keys.hasNext()){
+                    val key = keys.next()
+                    Log.d("keys" , key.toString())
+
+                    when(key){
+                        "alamat" -> laporan.alamat = jsonObject.getString(key)
+                        "idLaporan" -> laporan.idLaporan = jsonObject.getString(key)
+                        "kondisi_kerusakan" -> laporan.kondisi_kerusakan = jsonObject.getString(key)
+                        "deskripsi" -> laporan.deskripsi = jsonObject.getString(key)
+                        "latitude" -> laporan.latitude = jsonObject.getDouble(key)
+                        "longitude" -> laporan.longitude = jsonObject.getDouble(key)
+                        "id" -> laporan.idLaporan = jsonObject.getString(key)
+                        "predicted_foto" -> laporan.foto = jsonObject.getString(key)
+                        "status" -> laporan.status = jsonObject.getString(key)
+                    }
+                    if (key == "predicted_foto"){
+                        Log.d("link", jsonObject.getString("predicted_foto"))
+                    }
+                }
+                listLaporan.add(laporan)
+            }
+            listLaporan
+        }catch (e : Exception){
+            Log.d("nih", e.toString())
+            null
+        }
+    }
+
+    suspend fun modifyLaporanStatus(laporan_id : String, status : String) : Int{
+        return try{
+            Log.d("GOOD", "GOODD")
+            apiService.modifyLaporanStatus(laporan_id, status).code()
+        }catch (e : Exception){
+            400
+        }
+    }
+
+    suspend fun testToken(token: String) : Int{
+        return try {
+            apiService.getUserLaporans(token).code()
+        }catch (e : Exception){
+            403
+        }
+    }
+
+
 }

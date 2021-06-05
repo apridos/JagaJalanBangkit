@@ -23,4 +23,10 @@ class Interactor @Inject constructor(val repository : IRepository) : UseCase{
     override suspend fun createUser(user: User) : Int = repository.createUser(user)
 
     override suspend fun getAllLaporan() : List<ArrayList<Double>>? = repository.getAllLaporan()
+
+    override suspend fun getAllLaporanList() : List<Laporan>? = repository.getAllLaporanList()
+
+    override suspend fun modifyLaporanStatus(laporan_id: String, status: String): Int = repository.modifyLaporanStatus(laporan_id, status)
+
+    override suspend fun testToken(token: String) : Int = repository.testToken(token)
 }

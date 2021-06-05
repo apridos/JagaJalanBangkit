@@ -1,15 +1,12 @@
 package com.example.data
 
 import com.example.data.source.RemoteDataSource
-import com.example.data.source.network.response.ReauthResponse
 import com.example.data.utils.DataMapper
 import com.example.domain.model.Laporan
 import com.example.domain.model.Login
 import com.example.domain.model.Reauth
 import com.example.domain.model.User
 import com.example.domain.repository.IRepository
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -48,5 +45,10 @@ class Repository @Inject constructor(private val remoteDataSource: RemoteDataSou
 
     override suspend fun getAllLaporan(): List<ArrayList<Double>>? = remoteDataSource.getAllLaporan()
 
+    override suspend fun getAllLaporanList() : List<Laporan>? = remoteDataSource.getAllLaporanList()
+
+    override suspend fun modifyLaporanStatus(laporan_id: String, status: String): Int = remoteDataSource.modifyLaporanStatus(laporan_id, status)
+
+    override suspend fun testToken(token: String) : Int = remoteDataSource.testToken(token)
 }
 

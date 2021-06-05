@@ -17,15 +17,17 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.auth0.android.jwt.JWT
 import com.example.jagajalanbangkit.MyApplication
 import com.example.jagajalanbangkit.R
+import com.example.jagajalanbangkit.admin.home.screen.AdminHomeActivity
 import com.example.jagajalanbangkit.databinding.ActivityHomeBinding
 import com.example.jagajalanbangkit.lapor.screen.LaporActivity
 import com.example.jagajalanbangkit.login.screen.LoginActivity
 import com.example.jagajalanbangkit.riwayat.screen.RiwayatActivity
 import com.example.jagajalanbangkit.viewmodels.LaporanViewModel
+import com.example.jagajalanbangkit.viewmodels.UserViewModel
 import com.example.jagajalanbangkit.viewmodels.ViewModelFactory
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -49,6 +51,10 @@ class HomeActivity : AppCompatActivity() {
         factory
     }
 
+    private val userViewModel: UserViewModel by viewModels{
+        factory
+    }
+
     private var locationManager : LocationManager? = null
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -57,14 +63,18 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var mapFragment : SupportMapFragment
 
+    private var role : String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+
         MyApplication.appComponent.inject(this)
+        testToken()
         GlobalScope.launch(Dispatchers.Main) {
             getAllLaporan()
         }
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         binding.progressBar.visibility = View.VISIBLE
         checkLocation()
@@ -78,13 +88,7 @@ class HomeActivity : AppCompatActivity() {
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
             }
         }
-
-        Log.d("iniloh", sharedPreferences.getString(getString(R.string.key_token), null).toString())
-
-        if(sharedPreferences.getString(getString(R.string.key_token), null) == null){
-            Log.d("login", "login")
-            startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
-        }
+        locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0L, 0f, locationListener)
 
         binding.progressBar.visibility = View.INVISIBLE
 
@@ -112,7 +116,6 @@ class HomeActivity : AppCompatActivity() {
             try {
                 locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
             } catch(ex: SecurityException) {
-                Log.d("myTag", ex.toString())
             }
 
             val intent = Intent(this, LaporActivity::class.java)
@@ -155,12 +158,43 @@ class HomeActivity : AppCompatActivity() {
             if (listLaporan != null) {
                 for (koordinat in listLaporan!!) {
                     if(koordinat.size > 1){
-                    val location = LatLng(koordinat[1], koordinat[0])
-                    Log.d("loc", location.toString())
-                    it.addMarker(MarkerOptions().position(location))
+                        val location = LatLng(koordinat[1], koordinat[0])
+                        it.addMarker(MarkerOptions().position(location))
                     }
                 }
             }
         })
+    }
+
+    private fun testToken(){
+        val token = sharedPreferences.getString(getString(R.string.key_token), null).toString()
+        val refreshToken = sharedPreferences.getString(getString(R.string.key_refresh_token), null).toString()
+        if(token == null){
+            startActivity(Intent(this, LoginActivity::class.java))
+        }else{
+            GlobalScope.async(Dispatchers.Main) {
+                val test = GlobalScope.async {
+                    if(userViewModel.testToken(token) != 200){
+                        userViewModel.reAuth(refreshToken)?.let{
+                            with(sharedPreferences.edit()){
+                                putString(getString(R.string.key_token), it.token)
+                                putString(getString(R.string.key_refresh_token), it.refreshToken)
+                                commit()
+                            }
+                        } ?: startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
+                    }
+                }
+                println(test.await())
+                checkRole(token)
+            }
+
+        }
+    }
+
+    private fun checkRole(token : String){
+        role = JWT(token.replace("Bearer ", "")).getClaim("role").asString()
+        if(role.toString() != "user"){
+            startActivity(Intent(this@HomeActivity, AdminHomeActivity::class.java))
+        }
     }
 }

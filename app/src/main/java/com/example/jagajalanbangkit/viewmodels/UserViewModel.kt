@@ -18,4 +18,6 @@ class UserViewModel @Inject constructor(val interactor : Interactor) : ViewModel
 
     suspend fun createUser(user: User) : Int = interactor.createUser(user)
 
+    suspend fun testToken(token : String) : Int = interactor.testToken(token)
+
 }

@@ -36,6 +36,7 @@
     <string name="daftar_laporan">Daftar Laporan</string>
     <string name="selesai">Selesai</string>
     <string name="tunda">Tunda</string>
+    <string name="status_laporan">status laporan</string>
 
 
 </resources>

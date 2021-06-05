@@ -16,6 +16,7 @@ import com.example.jagajalanbangkit.R
 import com.example.jagajalanbangkit.databinding.ActivityRiwayatBinding
 import com.example.jagajalanbangkit.login.screen.LoginActivity
 import com.example.jagajalanbangkit.adapter.LaporanAdapter
+import com.example.jagajalanbangkit.admin.detail.screen.DetailActivity
 import com.example.jagajalanbangkit.viewmodels.LaporanViewModel
 import com.example.jagajalanbangkit.viewmodels.ViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -57,6 +58,12 @@ class RiwayatActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.Main) {
             setupList(checkToken())
         }
+        adapter.setOnItemClickCallback(object : LaporanAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: Laporan) {
+                showSelectedLaporan(data)
+            }
+        })
+
         setContentView(binding.root)
 
         binding.apply {
@@ -64,6 +71,12 @@ class RiwayatActivity : AppCompatActivity() {
                 this@RiwayatActivity.finish()
             }
         }
+    }
+
+    private fun showSelectedLaporan(laporan: Laporan) {
+        val intent = Intent(this, DetailLaporanActivity::class.java)
+        intent.putExtra("laporan", laporan)
+        startActivity((intent))
     }
 
     private fun checkToken() : String{

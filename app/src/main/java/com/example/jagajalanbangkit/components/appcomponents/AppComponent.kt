@@ -1,5 +1,7 @@
 package com.example.jagajalanbangkit.components.appcomponents
 
+import com.example.jagajalanbangkit.admin.home.screen.AdminHomeActivity
+import com.example.jagajalanbangkit.admin.laporan.screen.LaporanActivity
 import com.example.jagajalanbangkit.riwayat.screen.RiwayatActivity
 import com.example.jagajalanbangkit.components.appcomponents.scopes.AppScope
 import com.example.jagajalanbangkit.components.corecomponents.CoreComponent
@@ -30,4 +32,8 @@ interface AppComponent {
     fun inject(activity: DaftarActivity)
 
     fun inject(activity: RiwayatActivity)
+
+    fun inject(activity: AdminHomeActivity  )
+
+    fun inject(activity: LaporanActivity)
 }

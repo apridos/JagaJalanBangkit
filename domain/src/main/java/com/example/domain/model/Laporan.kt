@@ -11,6 +11,6 @@ data class Laporan(
     var kondisi_kerusakan : String? = null,
     var deskripsi : String? = null,
     var latitude : Double? = null,
-    var longitude : Double? = null
-
+    var longitude : Double? = null,
+    var status : String = "CREATED"
 ) : Parcelable

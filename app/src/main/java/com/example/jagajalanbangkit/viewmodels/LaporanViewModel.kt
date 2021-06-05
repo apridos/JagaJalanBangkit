@@ -13,7 +13,12 @@ class LaporanViewModel @Inject constructor(private val interactor : Interactor) 
 
     suspend fun getUserLaporans(token : String) : List<Laporan>? = interactor.getUserLaporans(token)
 
+    suspend fun getAllLaporanList() : List<Laporan>? = interactor.getAllLaporanList()
+
     suspend fun createLaporan(token: String, laporan: Laporan) : Int = interactor.createLaporan(token, laporan)
 
     suspend fun getAllLaporan() : List<ArrayList<Double>>? = interactor.getAllLaporan()
+
+    suspend fun modifyLaporanStatus(laporan_id : String, status : String) : Int = interactor.modifyLaporanStatus(laporan_id, status)
+
 }
